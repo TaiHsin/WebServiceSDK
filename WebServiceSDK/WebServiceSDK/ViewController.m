@@ -16,7 +16,21 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    
+    self.httpClient = [[HTTPClient alloc] init];
+    
+    [self fetchData];
+}
+
+- (void) fetchData {
+    
+    [self.httpClient fetchGetResponseWithCallback:^(NSDictionary * dict, NSError * error) {
+        if (error == NULL) {
+            NSLog(@"%@", dict);
+        } else {
+            NSLog(@"%@",error.localizedDescription);
+        }
+    }];
 }
 
 

@@ -7,9 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "HTTPClient.h"
 
 @interface ViewController : UIViewController
 
+@property HTTPClient * httpClient;
 
 @end
 

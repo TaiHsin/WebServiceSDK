@@ -15,6 +15,7 @@
 		5C548634220300CA00E446ED /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C548633220300CA00E446ED /* main.m */; };
 		5C54863E220300CA00E446ED /* WebServiceSDKTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C54863D220300CA00E446ED /* WebServiceSDKTests.m */; };
 		5C548649220300CA00E446ED /* WebServiceSDKUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C548648220300CA00E446ED /* WebServiceSDKUITests.m */; };
+		5C54865B2203F7C200E446ED /* HTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C54865A2203F7C200E446ED /* HTTPClient.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,8 @@
 		5C548644220300CA00E446ED /* WebServiceSDKUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WebServiceSDKUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C548648220300CA00E446ED /* WebServiceSDKUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WebServiceSDKUITests.m; sourceTree = "<group>"; };
 		5C54864A220300CA00E446ED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5C5486592203F7B500E446ED /* HTTPClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HTTPClient.h; sourceTree = "<group>"; };
+		5C54865A2203F7C200E446ED /* HTTPClient.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HTTPClient.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,6 +113,8 @@
 				5C54862F220300CA00E446ED /* LaunchScreen.storyboard */,
 				5C548632220300CA00E446ED /* Info.plist */,
 				5C548633220300CA00E446ED /* main.m */,
+				5C5486592203F7B500E446ED /* HTTPClient.h */,
+				5C54865A2203F7C200E446ED /* HTTPClient.m */,
 			);
 			path = WebServiceSDK;
 			sourceTree = "<group>";
@@ -264,6 +269,7 @@
 			files = (
 				5C548629220300CA00E446ED /* ViewController.m in Sources */,
 				5C548634220300CA00E446ED /* main.m in Sources */,
+				5C54865B2203F7C200E446ED /* HTTPClient.m in Sources */,
 				5C548626220300CA00E446ED /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
