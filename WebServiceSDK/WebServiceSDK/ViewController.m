@@ -20,6 +20,7 @@
     self.httpClient = [[HTTPClient alloc] init];
     
     [self fetchData];
+    [self postCustomerName: @"kkbox"];
     [self fetchImage];
 }
 
@@ -68,10 +69,24 @@
 }
 
 - (void) fetchData {
-    [self.httpClient fetchGetResponseWithCallback: ^(NSDictionary * dict, NSError * error) {
+    [self.httpClient fetchGetResponseWithCallback: ^(NSDictionary * dict, NSError * error)
+     {
+         if (error == NULL) {
+             NSLog(@"%@", dict);
+             
+         } else {
+             NSLog(@"%@",error.localizedDescription);
+         }
+     }];
+}
+
+- (void) postCustomerName: (NSString *)name {
+    [self.httpClient postCustomerName: name callback: ^(NSDictionary * dict, NSError * error) {
         if (error == NULL) {
             NSLog(@"%@", dict);
-        
+            NSString * custName = dict[@"form"];
+            NSLog(@"%@", custName);
+            
         } else {
             NSLog(@"%@",error.localizedDescription);
         }
@@ -81,8 +96,6 @@
 - (void) fetchImage {
     [self.httpClient fetchImageWithCallback: ^(UIImage * image, NSError * error) {
         if (error == NULL) {
-            NSLog(@"%@", image);
-            //            self->pigView.image = image;
             [self addImageView: image];
             
         } else {
@@ -90,6 +103,5 @@
         }
     }];
 }
-
 
 @end

@@ -19,23 +19,39 @@
     
     NSURLSessionDataTask * dataTask =
     [session dataTaskWithRequest: request
-               completionHandler:^(NSData * _Nullable data,
-                                   NSURLResponse * _Nullable response,
-                                   NSError * _Nullable error) {
+               completionHandler: ^(NSData * _Nullable data,
+                                    NSURLResponse * _Nullable response,
+                                    NSError * _Nullable error) {
                    
                    dispatch_async(dispatch_get_main_queue(), ^{
+                       
+                       if (error != NULL) {
+                           NSLog(@"dataTaskWithRequest error: %@", error);
+                           callback(nil, error);
+                       }
+                       
+                       if ([response isKindOfClass: [NSHTTPURLResponse class]]) {
+                           
+                           NSInteger statusCode = [(NSHTTPURLResponse *) response statusCode];
+                           
+                           if (statusCode != 200) {
+                               NSLog(@"dataTaskWithRequest HTTP status code: %ld", (long)statusCode);
+                               
+                               NSError * responseError = [[NSError alloc] initWithDomain: @"HTTP response error!"
+                                                                                    code: 1
+                                                                                userInfo: nil];
+                               
+                               callback(nil, responseError);
+                           }
+                       }
+                       
                        
                        if (data != NULL) {
                            NSError * parseError;
                            NSDictionary * dict = [NSJSONSerialization JSONObjectWithData: data
                                                                                  options: 0
-                                                                                   error: &parseError
-                                                  ];
+                                                                                   error: &parseError];
                            callback(dict, parseError);
-                           
-                       } else {
-                           
-                           callback(nil, error);
                        }
                    });
                }
@@ -44,8 +60,57 @@
     [dataTask resume];
 }
 
-- (void) postCustomerName: (NSString *)name callback: (void(^)(NSDictionary *, NSError *))callback {
+- (void) postCustomerName: (NSString *)name
+                 callback: (void(^)(NSDictionary *, NSError *))callback {
     
+    NSString * dataUrl = @"https://httpbin.org/post";
+    NSURL * url = [NSURL URLWithString: dataUrl];
+    NSMutableURLRequest * request = [NSMutableURLRequest requestWithURL: url];
+    request.HTTPMethod = @"POST";
+    NSString * args = [NSString stringWithFormat: @"custname=%@", name];
+    request.HTTPBody = [args dataUsingEncoding: NSUTF8StringEncoding];
+    
+    NSURLSession * session = [NSURLSession sharedSession];
+    NSURLSessionDataTask * dataTask =
+    [session dataTaskWithRequest: request
+               completionHandler: ^(NSData * _Nullable data,
+                                    NSURLResponse * _Nullable response,
+                                    NSError * _Nullable error) {
+                   
+                   dispatch_async(dispatch_get_main_queue(), ^{
+                       
+                       if (error != NULL) {
+                           NSLog(@"dataTaskWithRequest error: %@", error);
+                           callback(nil, error);
+                       }
+                       
+                       if ([response isKindOfClass: [NSHTTPURLResponse class]]) {
+                           
+                           NSInteger statusCode = [(NSHTTPURLResponse *) response statusCode];
+                           
+                           if (statusCode != 200) {
+                               NSLog(@"dataTaskWithRequest HTTP status code: %ld", (long)statusCode);
+                               
+                               NSError * responseError = [[NSError alloc] initWithDomain: @"HTTP response error!"
+                                                                                    code: 1
+                                                                                userInfo: nil];
+                               
+                               callback(nil, responseError);
+                           }
+                       }
+                       
+                       if (data != NULL) {
+                           NSError * parseError;
+                           NSDictionary * dict = [NSJSONSerialization JSONObjectWithData: data
+                                                                                 options: 0
+                                                                                   error: &parseError];
+                           callback(dict, parseError);
+                       }
+                   });
+               }
+     ];
+    
+    [dataTask resume];
 }
 
 - (void) fetchImageWithCallback: (void(^)(UIImage *, NSError *))callback {
@@ -62,12 +127,27 @@
                    
                    dispatch_async(dispatch_get_main_queue(), ^{
                        
+                       if (error != NULL) {
+                           NSLog(@"dataTaskWithRequest error: %@", error);
+                           callback(nil, error);
+                       }
+                       
+                       if ([response isKindOfClass: [NSHTTPURLResponse class]]) {
+                           
+                           NSInteger statusCode = [(NSHTTPURLResponse *) response statusCode];
+
+                           if (statusCode != 200) {
+                               NSLog(@"dataTaskWithRequest HTTP status code: %ld", (long)statusCode);
+                               
+                               NSError * responseError = [[NSError alloc] initWithDomain: @"HTTP response error!" code: 1 userInfo: nil];
+                               
+                               callback(nil, responseError);
+                           }
+                       }
+                       
                        if (data != NULL) {
                            UIImage * image = [UIImage imageWithData: data];
                            callback(image, nil);
-                           
-                       } else {
-                           callback(nil, error);
                        }
                    });
                }
