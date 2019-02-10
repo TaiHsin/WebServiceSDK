@@ -18,10 +18,9 @@
     [super viewDidLoad];
     
     self.httpClient = [[HTTPClient alloc] init];
-    
     [self fetchData];
-    [self postCustomerName: @"kkbox"];
     [self fetchImage];
+    [self postCustomerName: @"kkbox"];
 }
 
 - (void) addImageView: (UIImage *)image {
@@ -69,6 +68,7 @@
 }
 
 - (void) fetchData {
+    
     [self.httpClient fetchGetResponseWithCallback: ^(NSDictionary * dict, NSError * error)
      {
          if (error == NULL) {
@@ -80,12 +80,12 @@
      }];
 }
 
-- (void) postCustomerName: (NSString *)name {
-    [self.httpClient postCustomerName: name callback: ^(NSDictionary * dict, NSError * error) {
+- (void) fetchImage {
+    
+    //    __weak typeof(self) weakSelf;
+    [self.httpClient fetchImageWithCallback: ^(UIImage * image, NSError * error) {
         if (error == NULL) {
-            NSLog(@"%@", dict);
-            NSString * custName = dict[@"form"];
-            NSLog(@"%@", custName);
+            [self addImageView: image];
             
         } else {
             NSLog(@"%@",error.localizedDescription);
@@ -93,10 +93,12 @@
     }];
 }
 
-- (void) fetchImage {
-    [self.httpClient fetchImageWithCallback: ^(UIImage * image, NSError * error) {
+- (void) postCustomerName: (NSString *)name {
+    
+    [self.httpClient postCustomerName: name callback: ^(NSDictionary * dict, NSError * error) {
         if (error == NULL) {
-            [self addImageView: image];
+            NSString * custName = dict[@"form"];
+            NSLog(@"%@", custName);
             
         } else {
             NSLog(@"%@",error.localizedDescription);
