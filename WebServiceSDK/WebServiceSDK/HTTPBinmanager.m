@@ -11,6 +11,23 @@
 
 @implementation HTTPBinManager
 
++ (instancetype)sharedInstance {
+    
+    static HTTPBinManager * instance = nil;
+    static dispatch_once_t onceToken;
+    
+    dispatch_once(&onceToken, ^{
+        instance = [[HTTPBinManager alloc] init];
+    });
+                    
+    return instance;
+}
+
+- (void)executeOperation {
+    
+    NSLog(@"------------------");
+    NSLog(@"EXECUTE OPERATION!");
+}
 
 @end
 
