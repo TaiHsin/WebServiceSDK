@@ -12,6 +12,9 @@
 @interface ViewController : UIViewController
 
 @property HTTPClient * httpClient;
+@property UILabel * processLabel;
+@property UIButton * executeButton;
+@property UIImageView * pigView;
 
 @end
 

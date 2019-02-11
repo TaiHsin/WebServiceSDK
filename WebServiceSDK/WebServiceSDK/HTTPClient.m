@@ -11,7 +11,7 @@
 
 @implementation HTTPClient
 
-- (void) getData: (NSString *)dataUrl
+- (void)getData: (NSString *)dataUrl
         callback: (void(^)(NSData *, NSError *))callback {
     
     NSURL * url = [NSURL URLWithString: dataUrl];
@@ -50,7 +50,7 @@
     [dataTask resume];
 }
 
-- (void) fetchGetResponseWithCallback: (void(^)(NSDictionary *, NSError *))callback {
+- (void)fetchGetResponseWithCallback: (void(^)(NSDictionary *, NSError *))callback {
     
     NSString * dataUrl = @"https://httpbin.org/get";
     [self getData: dataUrl
@@ -74,7 +74,7 @@
 }
 
 
-- (void) fetchImageWithCallback: (void(^)(UIImage *, NSError *))callback {
+- (void)fetchImageWithCallback: (void(^)(UIImage *, NSError *))callback {
     
     NSString * dataUrl = @"https://httpbin.org/image/png";
     [self getData: dataUrl
@@ -93,7 +93,7 @@
      ];
 }
 
-- (void) postCustomerName: (NSString *)name
+- (void)postCustomerName: (NSString *)name
                  callback: (void(^)(NSDictionary *, NSError *))callback {
     
     NSString * dataUrl = @"https://httpbin.org/post";

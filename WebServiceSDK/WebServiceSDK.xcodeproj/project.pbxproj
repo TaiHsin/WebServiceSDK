@@ -16,6 +16,8 @@
 		5C54863E220300CA00E446ED /* WebServiceSDKTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C54863D220300CA00E446ED /* WebServiceSDKTests.m */; };
 		5C548649220300CA00E446ED /* WebServiceSDKUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C548648220300CA00E446ED /* WebServiceSDKUITests.m */; };
 		5C54865B2203F7C200E446ED /* HTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C54865A2203F7C200E446ED /* HTTPClient.m */; };
+		5CC98BA822116D0D00542DDC /* HTTPBinManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CC98BA722116D0D00542DDC /* HTTPBinManager.m */; };
+		5CC98BAB22116D2A00542DDC /* HTTPBinManagerOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CC98BAA22116D2A00542DDC /* HTTPBinManagerOperation.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +56,10 @@
 		5C54864A220300CA00E446ED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5C5486592203F7B500E446ED /* HTTPClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HTTPClient.h; sourceTree = "<group>"; };
 		5C54865A2203F7C200E446ED /* HTTPClient.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HTTPClient.m; sourceTree = "<group>"; };
+		5CC98BA622116CD500542DDC /* HTTPBinManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HTTPBinManager.h; sourceTree = "<group>"; };
+		5CC98BA722116D0D00542DDC /* HTTPBinManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HTTPBinManager.m; sourceTree = "<group>"; };
+		5CC98BA922116D1E00542DDC /* HTTPBinManagerOperation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HTTPBinManagerOperation.h; sourceTree = "<group>"; };
+		5CC98BAA22116D2A00542DDC /* HTTPBinManagerOperation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HTTPBinManagerOperation.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,6 +114,10 @@
 				5C548625220300CA00E446ED /* AppDelegate.m */,
 				5C548627220300CA00E446ED /* ViewController.h */,
 				5C548628220300CA00E446ED /* ViewController.m */,
+				5CC98BA622116CD500542DDC /* HTTPBinManager.h */,
+				5CC98BA922116D1E00542DDC /* HTTPBinManagerOperation.h */,
+				5CC98BAA22116D2A00542DDC /* HTTPBinManagerOperation.m */,
+				5CC98BA722116D0D00542DDC /* HTTPBinManager.m */,
 				5C54862A220300CA00E446ED /* Main.storyboard */,
 				5C54862D220300CA00E446ED /* Assets.xcassets */,
 				5C54862F220300CA00E446ED /* LaunchScreen.storyboard */,
@@ -270,7 +280,9 @@
 				5C548629220300CA00E446ED /* ViewController.m in Sources */,
 				5C548634220300CA00E446ED /* main.m in Sources */,
 				5C54865B2203F7C200E446ED /* HTTPClient.m in Sources */,
+				5CC98BA822116D0D00542DDC /* HTTPBinManager.m in Sources */,
 				5C548626220300CA00E446ED /* AppDelegate.m in Sources */,
+				5CC98BAB22116D2A00542DDC /* HTTPBinManagerOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
