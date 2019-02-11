@@ -71,7 +71,7 @@
     
     [self.httpClient fetchGetResponseWithCallback: ^(NSDictionary * dict, NSError * error)
      {
-         if (error == NULL) {
+         if (error == nil) {
              NSLog(@"%@", dict);
              
          } else {
@@ -82,10 +82,10 @@
 
 - (void) fetchImage {
     
-    //    __weak typeof(self) weakSelf;
+    __weak typeof(self) weakSelf = self;
     [self.httpClient fetchImageWithCallback: ^(UIImage * image, NSError * error) {
-        if (error == NULL) {
-            [self addImageView: image];
+        if (error == nil) {
+            [weakSelf addImageView: image];
             
         } else {
             NSLog(@"%@",error.localizedDescription);
@@ -96,7 +96,7 @@
 - (void) postCustomerName: (NSString *)name {
     
     [self.httpClient postCustomerName: name callback: ^(NSDictionary * dict, NSError * error) {
-        if (error == NULL) {
+        if (error == nil) {
             NSString * custName = dict[@"form"];
             NSLog(@"%@", custName);
             

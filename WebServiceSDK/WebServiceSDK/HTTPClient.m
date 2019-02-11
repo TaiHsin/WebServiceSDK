@@ -24,7 +24,7 @@
                                     NSURLResponse * _Nullable response,
                                     NSError * _Nullable error) {
                    
-                   if (error != NULL) {
+                   if (error != nil) {
                        NSLog(@"dataTaskWithRequest error: %@", error);
                        callback(nil, error);
                    }
@@ -58,7 +58,7 @@
              
              dispatch_async(dispatch_get_main_queue(), ^{
                  
-                 if (data != NULL) {
+                 if (data != nil) {
                      NSError * parseError;
                      NSDictionary * dict = [NSJSONSerialization JSONObjectWithData: data
                                                                            options: 0
@@ -81,7 +81,7 @@
          callback: ^(NSData * data, NSError * error) {
              dispatch_async(dispatch_get_main_queue(), ^{
                  
-                 if (data != NULL) {
+                 if (data != nil) {
                      UIImage * image = [UIImage imageWithData: data];
                      callback(image, nil);
                      
@@ -112,7 +112,7 @@
                    
                    dispatch_async(dispatch_get_main_queue(), ^{
                        
-                       if (error != NULL) {
+                       if (error != nil) {
                            NSLog(@"dataTaskWithRequest error: %@", error);
                            callback(nil, error);
                        }
@@ -126,12 +126,11 @@
                                NSError * responseError = [[NSError alloc] initWithDomain: @"HTTP response error!"
                                                                                     code: 1
                                                                                 userInfo: nil];
-                               
                                callback(nil, responseError);
                            }
                        }
                        
-                       if (data != NULL) {
+                       if (data != nil) {
                            NSError * parseError;
                            NSDictionary * dict = [NSJSONSerialization JSONObjectWithData: data
                                                                                  options: 0
