@@ -11,4 +11,21 @@
 
 @implementation HTTPBinManagerOperation
 
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        self.httpClient = [[HTTPClient alloc] init];
+    }
+    return self;
+}
+
+- (void)main {
+    [super main];
+    
+//    [self.httpClient fetchGetResponseWithCallback: ^(NSDictionary *, NSError *) {
+//        <#code#>
+//    }]
+}
+
 @end

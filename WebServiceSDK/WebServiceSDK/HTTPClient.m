@@ -30,7 +30,6 @@
                    }
                    
                    if ([response isKindOfClass: [NSHTTPURLResponse class]]) {
-                       
                        NSInteger statusCode = [(NSHTTPURLResponse *) response statusCode];
                        
                        if (statusCode != 200) {
