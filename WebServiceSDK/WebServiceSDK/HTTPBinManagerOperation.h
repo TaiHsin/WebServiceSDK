@@ -12,9 +12,11 @@
 
 @protocol HTTPOperationProcessDelegate <NSObject>
 
-- (void)didRequestSucceed: (HTTPBinManagerOperation *)httpOperation withStatus: (int)number;
+- (void)didRequestSucceed: (HTTPBinManagerOperation *)httpOperation withStatus: (NSString *)percent;
 
 - (void)didRequestFail: (HTTPBinManagerOperation *)httpOperation;
+
+- (void)didRecieveData: (HTTPBinManagerOperation *)httpOperation withFirstDict: (NSDictionary *)firstDict withSecondDict: (NSDictionary *)secondDict withImage: (UIImage *)image;
 
 @end
 

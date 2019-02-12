@@ -96,7 +96,7 @@
                                                                        toItem: nil
                                                                     attribute: 0
                                                                    multiplier: 1
-                                                                     constant: 50]
+                                                                     constant: 30]
      ];
     [self.executeButton addConstraint: [NSLayoutConstraint constraintWithItem: self.executeButton
                                                                     attribute: NSLayoutAttributeWidth
@@ -104,7 +104,7 @@
                                                                        toItem: nil
                                                                     attribute: 0
                                                                    multiplier: 1
-                                                                     constant: 200]
+                                                                     constant: 100]
      ];
     [self.view addConstraint: [NSLayoutConstraint constraintWithItem: self.executeButton
                                                            attribute: NSLayoutAttributeCenterY
@@ -128,7 +128,7 @@
     self.processLabel = [UILabel new];
     [self.processLabel setTranslatesAutoresizingMaskIntoConstraints: NO];
     [self.processLabel setTintColor: [UIColor grayColor]];
-    [self.processLabel setText: @"0 %"];
+    [self.processLabel setText: @"0"];
     [self.view addSubview: self.processLabel];
     
     [self.processLabel addConstraint: [NSLayoutConstraint constraintWithItem: self.processLabel
@@ -164,13 +164,12 @@
                                                               toItem: self.executeButton
                                                            attribute:NSLayoutAttributeCenterX
                                                           multiplier: 1
-                                                            constant: 0]
+                                                            constant: 10]
      ];
 }
 
 - (void)executeOperation: (UIButton *)sender {
-    
-    NSLog(@"Button Pressed!");
+
     [self.httpManager executeOperation];
 }
 
@@ -213,32 +212,28 @@
     }];
 }
 
-- (void)didFail:(HTTPBinManager *)httpManager {
+- (void)didFail: (HTTPBinManager *)httpManager {
     
-    // TODO: reset process bar
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.processLabel.text = @"0";
+    });
 }
 
-- (void)didSucceed:(HTTPBinManager *)httpManager withStatus:(int)number {
+- (void)didSucceed: (HTTPBinManager *)httpManager withStatus: (NSString *)percent {
     
-    switch (number) {
-        case 1:
-            self.processLabel.text = @"33 %";
-            break;
-            
-        case 2:
-            self.processLabel.text = @"66 %";
-            break;
-            
-        case 3:
-            self.processLabel.text = @"100 %";
-            break;
-            
-        default:
-            break;
-    }
-    // TODO:
-    // 1. update process bar
-    // 2. pass and show data
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.processLabel.text = percent;
+        [self.view layoutIfNeeded];
+    });
+}
+
+- (void)didPassData: (HTTPBinManager *)httpManager
+      withFirstDict: (NSDictionary *)firstDict
+     withSecondDict: (NSDictionary *)secondDict
+          withImage: (UIImage *)image {
+    
+    NSLog(firstDict);
+    NSLog(secondDict);
 }
 
 @end

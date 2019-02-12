@@ -10,7 +10,7 @@
 #import "HTTPClient.h"
 #import "HTTPBinManager.h"
 
-@interface ViewController : UIViewController <HTTPProcessDelegate>
+@interface ViewController: UIViewController <HTTPProcessDelegate>
 
 @property HTTPClient * httpClient;
 @property HTTPBinManager * httpManager;

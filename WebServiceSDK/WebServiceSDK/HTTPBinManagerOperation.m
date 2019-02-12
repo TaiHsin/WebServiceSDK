@@ -23,66 +23,72 @@
 - (void)main {
     [super main];
     
+    __block NSDictionary * firstDict = [NSDictionary new];
+    __block NSDictionary * secondDict = [NSDictionary new];
+    __block UIImage * pigImage = [UIImage new];
+    
     dispatch_semaphore_t mySemaphore = dispatch_semaphore_create(0);
     
     [self.httpClient fetchGetResponseWithCallback: ^(NSDictionary * dict, NSError * error) {
         
         if (error == nil) {
-            NSLog(@"%@", dict);
             
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.delegate didRequestSucceed: self withStatus: 1];
-            });
+            firstDict = dict;
+            [self.delegate didRequestSucceed: self withStatus: @"33"];
             
         } else {
             NSLog(@"%@",error.localizedDescription);
             
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.delegate didRequestFail: self];
-            });
+            [self.delegate didRequestFail: self];
         }
         
         dispatch_semaphore_signal(mySemaphore);
     }];
+    
+    if (self.cancelled) {
+        
+        [self.delegate didRequestFail: self];
+        
+        return;
+    }
     
     dispatch_semaphore_wait(mySemaphore, DISPATCH_TIME_FOREVER);
     [self.httpClient fetchImageWithCallback: ^(UIImage * image, NSError * error) {
         
         if (error == nil) {
-//            [weakSelf.pigView setImage: image];
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.delegate didRequestSucceed: self withStatus: 2];
-            });
+            pigImage = image;
+            [self.delegate didRequestSucceed: self withStatus: @"66"];
             
         } else {
             NSLog(@"%@",error.localizedDescription);
             
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.delegate didRequestFail: self];
-            });
+            [self.delegate didRequestFail: self];
         }
         
         dispatch_semaphore_signal(mySemaphore);
     }];
+    
+    if (self.cancelled) {
+
+        [self.delegate didRequestFail: self];
+        
+        return;
+    }
     
     dispatch_semaphore_wait(mySemaphore, DISPATCH_TIME_FOREVER);
     [self.httpClient postCustomerName: @"KKBOX" callback: ^(NSDictionary * dict, NSError * error) {
         
         if (error == nil) {
-            NSString * custName = dict[@"form"];
-            NSLog(@"%@", custName);
+            //            NSString * custName = dict[@"form"];
+            //            NSLog(@"%@", custName);
+            secondDict = dict[@"form"];
             
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.delegate didRequestSucceed: self withStatus: 3];
-            });
+            [self.delegate didRequestSucceed: self withStatus: @"100"];
             
         } else {
             NSLog(@"%@",error.localizedDescription);
             
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.delegate didRequestFail: self];
-            });
+            [self.delegate didRequestFail: self];
         }
         
         dispatch_semaphore_signal(mySemaphore);
@@ -90,11 +96,12 @@
     
     dispatch_semaphore_wait(mySemaphore, DISPATCH_TIME_FOREVER);
     
-    // TODO: pass data
-}
-
-- (void)cancel {
-    [super cancel];
+    // Pass data after all request succeed.
+    
+//    [self.delegate didRecieveData: self
+//                    withFirstDict: firstDict
+//                   withSecondDict: secondDict
+//                        withImage: pigImage];
 }
 
 @end

@@ -12,15 +12,15 @@
 
 @protocol HTTPProcessDelegate <NSObject>
 
-- (void)didSucceed: (HTTPBinManager *)httpManager withStatus: (int)number;
+- (void)didSucceed: (HTTPBinManager *)httpManager withStatus: (NSString *)percent;
 
 - (void)didFail: (HTTPBinManager *)httpManager;
+
+- (void)didPassData: (HTTPBinManager *)httpManager withFirstDict: (NSDictionary *)firstDict withSecondDict: (NSDictionary *)secondDict withImage: (UIImage *)image;
 
 @end
 
 @interface HTTPBinManager: NSObject <HTTPOperationProcessDelegate>
-
-@property HTTPBinManagerOperation * httpOperation;
 
 @property NSOperationQueue * queue;
 
