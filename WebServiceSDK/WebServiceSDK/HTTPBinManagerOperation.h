@@ -10,11 +10,11 @@
 
 @class HTTPBinManagerOperation;
 
-@protocol HTTPProcessDelegate <NSObject>
+@protocol HTTPOperationProcessDelegate <NSObject>
 
-- (void)isRequestSucceed: (HTTPBinManagerOperation *)httpOperation;
+- (void)didRequestSucceed: (HTTPBinManagerOperation *)httpOperation withStatus: (int)number;
 
-- (void)isRequestFailed: (HTTPBinManagerOperation *)httpOperation;
+- (void)didRequestFail: (HTTPBinManagerOperation *)httpOperation;
 
 @end
 
@@ -22,6 +22,6 @@
 
 @property HTTPClient * httpClient;
 
-@property (weak, nonatomic) id <HTTPProcessDelegate> delegate;
+@property (weak, nonatomic) id <HTTPOperationProcessDelegate> delegate;
 
 @end

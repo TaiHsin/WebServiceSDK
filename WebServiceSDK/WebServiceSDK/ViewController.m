@@ -17,12 +17,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.httpClient = [[HTTPClient alloc] init];
+//    self.httpClient = [[HTTPClient alloc] init];
+    self.httpManager = [HTTPBinManager new];
+    self.httpManager.delegate = self;
 
     [self setupUIElements];
-    [self fetchData];
-    [self fetchImage];
-    [self postCustomerName: @"kkbox"];
+//    [self fetchData];
+//    [self fetchImage];
+//    [self postCustomerName: @"kkbox"];
 }
 
 - (void)setupUIElements {
@@ -168,8 +170,8 @@
 
 - (void)executeOperation: (UIButton *)sender {
     
-    // TODO:
     NSLog(@"Button Pressed!");
+    [self.httpManager executeOperation];
 }
 
 - (void)fetchData {
@@ -209,6 +211,34 @@
             NSLog(@"%@",error.localizedDescription);
         }
     }];
+}
+
+- (void)didFail:(HTTPBinManager *)httpManager {
+    
+    // TODO: reset process bar
+}
+
+- (void)didSucceed:(HTTPBinManager *)httpManager withStatus:(int)number {
+    
+    switch (number) {
+        case 1:
+            self.processLabel.text = @"33 %";
+            break;
+            
+        case 2:
+            self.processLabel.text = @"66 %";
+            break;
+            
+        case 3:
+            self.processLabel.text = @"100 %";
+            break;
+            
+        default:
+            break;
+    }
+    // TODO:
+    // 1. update process bar
+    // 2. pass and show data
 }
 
 @end

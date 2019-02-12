@@ -25,8 +25,31 @@
 
 - (void)executeOperation {
     
+    // Cancel all operation
+    // TODO
+    
+    // Add operation
+    HTTPBinManagerOperation * httpOperation = [HTTPBinManagerOperation new];
+    httpOperation.delegate = self;
+    
+    self.queue = [NSOperationQueue new];
+    [self.queue setMaxConcurrentOperationCount: 1];
+    [self.queue addOperation: httpOperation];
+    
     NSLog(@"------------------");
     NSLog(@"EXECUTE OPERATION!");
+}
+
+#pragma HTTPOperationDelegate
+
+- (void)didRequestFail:(HTTPBinManagerOperation *)httpOperation {
+    
+    [self.delegate didFail: self];
+}
+
+- (void)didRequestSucceed:(HTTPBinManagerOperation *)httpOperation withStatus:(int)number {
+    
+    [self.delegate didSucceed: self withStatus: number];
 }
 
 @end

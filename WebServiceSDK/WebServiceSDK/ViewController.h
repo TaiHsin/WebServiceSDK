@@ -8,10 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "HTTPClient.h"
+#import "HTTPBinManager.h"
 
-@interface ViewController : UIViewController
+@interface ViewController : UIViewController <HTTPProcessDelegate>
 
 @property HTTPClient * httpClient;
+@property HTTPBinManager * httpManager;
 @property UILabel * processLabel;
 @property UIButton * executeButton;
 @property UIImageView * pigView;
