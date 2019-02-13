@@ -11,9 +11,7 @@
 @interface HTTPClient: NSObject
 
 - (void)fetchGetResponseWithCallback: (void(^)(NSDictionary *, NSError *))callback;
-
 - (void)postCustomerName: (NSString *)name callback:(void(^)(NSDictionary *, NSError *))callback;
-
 - (void)fetchImageWithCallback: (void(^)(UIImage *, NSError *))callback;
 
 @end

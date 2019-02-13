@@ -27,6 +27,7 @@
                    if (error != nil) {
                        NSLog(@"dataTaskWithRequest error: %@", error);
                        callback(nil, error);
+                       return;
                    }
                    
                    if ([response isKindOfClass: [NSHTTPURLResponse class]]) {
@@ -35,11 +36,12 @@
                        if (statusCode != 200) {
                            NSLog(@"dataTaskWithRequest HTTP status code: %ld", (long)statusCode);
                            
-                           NSError * responseError = [[NSError alloc] initWithDomain: @"HTTP response error!"
+                           NSError * responseError = [[NSError alloc] initWithDomain: @"ResponseError"
                                                                                 code: 1
                                                                             userInfo: nil];
                            
                            callback(nil, responseError);
+                           return;
                        }
                    }
                    
@@ -64,6 +66,7 @@
                      
                  } else {
                      callback(nil, error);
+                     return;
                  }
          }
      ];
@@ -82,6 +85,7 @@
                      
                  } else {
                      callback(nil, error);
+                     return;
                  }
          }
      ];
@@ -107,6 +111,7 @@
                        if (error != nil) {
                            NSLog(@"dataTaskWithRequest error: %@", error);
                            callback(nil, error);
+                           return;
                        }
                    
 
@@ -116,10 +121,11 @@
                            if (statusCode != 200) {
                                NSLog(@"dataTaskWithRequest HTTP status code: %ld", (long)statusCode);
                                
-                               NSError * responseError = [[NSError alloc] initWithDomain: @"HTTP response error!"
+                               NSError * responseError = [[NSError alloc] initWithDomain: @"ResponseError"
                                                                                     code: 1
                                                                                 userInfo: nil];
                                callback(nil, responseError);
+                               return;
                            }
                        }
                        

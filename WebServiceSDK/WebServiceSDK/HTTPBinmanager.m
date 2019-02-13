@@ -36,7 +36,6 @@
 - (void)executeOperation {
     
     [self.queue cancelAllOperations];
-    [self.delegate didFail: self];
     
     HTTPBinManagerOperation * httpOperation = [HTTPBinManagerOperation new];
     httpOperation.delegate = self;
@@ -45,27 +44,20 @@
 
 #pragma HTTPOperationDelegate
 
-- (void)didRequestFail: (HTTPBinManagerOperation *)httpOperation {
+- (void)operation:(HTTPBinManagerOperation *)httpOperation willFailWithError:(NSString *)errorInfo {
     
-//    [self.queue cancelAllOperations];
-    [self.delegate didFail: self];
+    [self.queue cancelAllOperations];
+    [self.delegate manager: self didFailWithError: errorInfo];
 }
 
-- (void)didRequestSucceed: (HTTPBinManagerOperation *)httpOperation
-               withStatus: (NSString *)percent {
-    NSLog(@"%@", percent);
-    [self.delegate didSucceed: self withStatus: percent];
+- (void)operation: (HTTPBinManagerOperation *)httpOperation willSuccessWithStatus: (NSString *)percent {
+    
+    [self.delegate manager: self didSucceedWithStatus: percent];
 }
 
-- (void)didRecieveData: (HTTPBinManagerOperation *)httpOperation
-         withFirstDict: (NSDictionary *)firstDict
-        withSecondDict: (NSDictionary *)secondDict
-             withImage: (UIImage *)image {
+- (void)operation:(HTTPBinManagerOperation *)httpOperation willSucceedWithFirstDict:(NSDictionary *)firstDict withSecondDict:(NSDictionary *)secondDict withImage:(UIImage *)image {
     
-    [self.delegate didPassData: self
-                    withFirstDict: firstDict
-                   withSecondDict: secondDict
-                        withImage: image];
+    [self.delegate manager: self didSucceedWithFirstDict: firstDict withSecondDict: secondDict withImage: image];
 }
 
 @end

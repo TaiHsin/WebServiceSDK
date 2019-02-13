@@ -10,22 +10,18 @@
 
 @class HTTPBinManagerOperation;
 
-@protocol HTTPOperationProcessDelegate <NSObject>
+@protocol OperationDelegate <NSObject>
 
-- (void)didRequestSucceed: (HTTPBinManagerOperation *)httpOperation withStatus: (NSString *)percent;
-
-- (void)didRequestFail: (HTTPBinManagerOperation *)httpOperation;
-
-- (void)didRecieveData: (HTTPBinManagerOperation *)httpOperation withFirstDict: (NSDictionary *)firstDict withSecondDict: (NSDictionary *)secondDict withImage: (UIImage *)image;
+- (void)operation: (HTTPBinManagerOperation *)httpOperation willSuccessWithStatus: (NSString *)percent;
+- (void)operation: (HTTPBinManagerOperation *)httpOperation willFailWithError: (NSString *)errorInfo;
+- (void)operation: (HTTPBinManagerOperation *)httpOperation willSucceedWithFirstDict: (NSDictionary *)firstDict withSecondDict: (NSDictionary *)secondDict withImage: (UIImage *)image;
 
 @end
 
 @interface HTTPBinManagerOperation: NSOperation
 
 @property (nonatomic, strong) HTTPClient * httpClient;
-
 @property (nonatomic, strong) dispatch_semaphore_t semaphore;
-
-@property (weak, nonatomic) id <HTTPOperationProcessDelegate> delegate;
+@property (weak, nonatomic) id <OperationDelegate> delegate;
 
 @end

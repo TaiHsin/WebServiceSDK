@@ -32,65 +32,57 @@
     [self.httpClient fetchGetResponseWithCallback: ^(NSDictionary * dict, NSError * error) {
         
         if (error == nil) {
-            
             firstDict = dict;
-            [self.delegate didRequestSucceed: self withStatus: @"33"];
+            [self.delegate operation: self willSuccessWithStatus: @"33"];
             
         } else {
             NSLog(@"%@",error.localizedDescription);
-//            [self cancel];
-            [self.delegate didRequestFail: self];
+
+            [self.delegate operation: self willFailWithError: error.domain];
         }
         
         dispatch_semaphore_signal(self.semaphore);
     }];
     
+    dispatch_semaphore_wait(self.semaphore, DISPATCH_TIME_FOREVER);
+    
     if (self.cancelled) {
+        return;
+    }
+
+    [self.httpClient postCustomerName: @"KKBOX" callback: ^(NSDictionary * dict, NSError * error) {
         
-        [self.delegate didRequestFail: self];
+        if (error == nil) {
+            secondDict = dict[@"form"];
+            
+            [self.delegate operation: self willSuccessWithStatus: @"66"];
+            
+        } else {
+            NSLog(@"%@",error.localizedDescription);
+           
+            [self.delegate operation: self willFailWithError: error.domain];
+        }
         
+        dispatch_semaphore_signal(self.semaphore);
+    }];
+    
+    dispatch_semaphore_wait(self.semaphore, DISPATCH_TIME_FOREVER);
+    
+    if (self.cancelled) {
         return;
     }
     
-    dispatch_semaphore_wait(self.semaphore, DISPATCH_TIME_FOREVER);
     [self.httpClient fetchImageWithCallback: ^(UIImage * image, NSError * error) {
         
         if (error == nil) {
             pigImage = image;
-            [self.delegate didRequestSucceed: self withStatus: @"66"];
             
-        } else {
-            NSLog(@"%@",error.localizedDescription);
-//            [self cancel];
-            [self.delegate didRequestFail: self];
-        }
-        
-        dispatch_semaphore_signal(self.semaphore);
-    }];
-    
-    if (self.cancelled) {
-
-        [self.delegate didRequestFail: self];
-        
-        return;
-    }
-    
-    dispatch_semaphore_wait(self.semaphore, DISPATCH_TIME_FOREVER);
-    [self.httpClient postCustomerName: @"KKBOX" callback: ^(NSDictionary * dict, NSError * error) {
-        
-        if (error == nil) {
-            //            NSString * custName = dict[@"form"];
-            //            NSLog(@"%@", custName);
-            secondDict = dict[@"form"];
-            
-            [self.delegate didRequestSucceed: self withStatus: @"100"];
+            [self.delegate operation: self willSuccessWithStatus: @"100"];
             
         } else {
             NSLog(@"%@",error.localizedDescription);
             
-//            [self cancel];
-            
-            [self.delegate didRequestFail: self];
+            [self.delegate operation: self willFailWithError: error.domain];
         }
         
         dispatch_semaphore_signal(self.semaphore);
@@ -100,10 +92,7 @@
     
     // Pass data after all request succeed.
     
-//    [self.delegate didRecieveData: self
-//                    withFirstDict: firstDict
-//                   withSecondDict: secondDict
-//                        withImage: pigImage];
+    [self.delegate operation: self willSucceedWithFirstDict: firstDict withSecondDict: secondDict withImage: pigImage];
 }
 
 - (void)cancel {

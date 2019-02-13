@@ -10,24 +10,20 @@
 
 @class HTTPBinManager;
 
-@protocol HTTPProcessDelegate <NSObject>
+@protocol ManagerDelegate <NSObject>
 
-- (void)didSucceed: (HTTPBinManager *)httpManager withStatus: (NSString *)percent;
-
-- (void)didFail: (HTTPBinManager *)httpManager;
-
-- (void)didPassData: (HTTPBinManager *)httpManager withFirstDict: (NSDictionary *)firstDict withSecondDict: (NSDictionary *)secondDict withImage: (UIImage *)image;
+- (void)manager: (HTTPBinManager *)httpManager didSucceedWithStatus: (NSString *)percent;
+- (void)manager: (HTTPBinManager *)httpManager didFailWithError: (NSString *)errorInfo;
+- (void)manager: (HTTPBinManager *)httpManager didSucceedWithFirstDict: (NSDictionary *)firstDict withSecondDict: (NSDictionary *)secondDict withImage: (UIImage *)image;
 
 @end
 
-@interface HTTPBinManager: NSObject <HTTPOperationProcessDelegate>
+@interface HTTPBinManager: NSObject <OperationDelegate>
 
 @property (nonatomic, strong) NSOperationQueue * queue;
-
-@property (weak, nonatomic) id <HTTPProcessDelegate> delegate;
+@property (weak, nonatomic) id <ManagerDelegate> delegate;
 
 + (instancetype)sharedInstance;
-
 - (void)executeOperation;
 
 @end

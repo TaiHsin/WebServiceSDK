@@ -17,30 +17,25 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-//    self.httpClient = [[HTTPClient alloc] init];
     self.httpManager = [HTTPBinManager new];
     self.httpManager.delegate = self;
-
+    
     [self setupUIElements];
-//    [self fetchData];
-//    [self fetchImage];
-//    [self postCustomerName: @"kkbox"];
 }
 
 - (void)setupUIElements {
     
-    [self addImageView];
+    [self addPigView];
     [self addExecuteButton];
     [self addStatusView];
     [self addStatusContentView];
     [self addProcessLabel];
 }
 
-- (void)addImageView {
+- (void)addPigView {
     
     self.pigView = [UIImageView new];
     self.pigView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.pigView setBackgroundColor: [UIColor grayColor]];
     [self.view addSubview: self.pigView];
     
     [self.pigView addConstraint: [NSLayoutConstraint constraintWithItem: self.pigView
@@ -130,6 +125,7 @@
     self.processLabel = [UILabel new];
     [self.processLabel setTranslatesAutoresizingMaskIntoConstraints: NO];
     [self.processLabel setTintColor: [UIColor grayColor]];
+    [self.processLabel setTextAlignment: NSTextAlignmentCenter];
     [self.processLabel setText: @"0"];
     [self.view addSubview: self.processLabel];
     
@@ -139,7 +135,7 @@
                                                                   toItem: nil
                                                                attribute: 0
                                                               multiplier: 1
-                                                                constant: 50]
+                                                                constant: 30]
      ];
     
     [self.processLabel addConstraint: [NSLayoutConstraint constraintWithItem: self.processLabel
@@ -148,7 +144,7 @@
                                                                   toItem: nil
                                                                attribute: 0
                                                               multiplier: 1
-                                                                constant: 50]
+                                                                constant: 150]
      ];
     
     [self.view addConstraint: [NSLayoutConstraint constraintWithItem: self.processLabel
@@ -157,7 +153,7 @@
                                                               toItem: self.statusView
                                                            attribute: NSLayoutAttributeTop
                                                           multiplier: 1
-                                                            constant: 10]
+                                                            constant: 0]
      ];
     
     [self.view addConstraint: [NSLayoutConstraint constraintWithItem: self.processLabel
@@ -166,7 +162,7 @@
                                                               toItem: self.statusView
                                                            attribute:NSLayoutAttributeCenterX
                                                           multiplier: 1
-                                                            constant: 10]
+                                                            constant: 0]
      ];
 }
 
@@ -261,60 +257,35 @@
 
 - (void)executeOperation: (UIButton *)sender {
 
+    self.processLabel.text = @"0";
+    self.pigView.image = nil;
+    self.statusWidthConstraint.constant = 0;
+    [self.view layoutIfNeeded];
+    
     [self.httpManager executeOperation];
 }
 
-- (void)fetchData {
-    
-    [self.httpClient fetchGetResponseWithCallback: ^(NSDictionary * dict, NSError * error) {
-        if (error == nil) {
-            NSLog(@"%@", dict);
-            
-        } else {
-            NSLog(@"%@",error.localizedDescription);
-        }
-    }];
-}
+#pragma HTTPProcessDelegate
 
-- (void)fetchImage {
-    
-    __weak typeof(self) weakSelf = self;
-    [self.httpClient fetchImageWithCallback: ^(UIImage * image, NSError * error) {
-        if (error == nil) {
-            [weakSelf.pigView setImage: image];
-            
-        } else {
-            NSLog(@"%@",error.localizedDescription);
-        }
-    }];
-}
+- (void)manager:(HTTPBinManager *)httpManager didFailWithError:(NSString *)errorInfo {
 
-- (void)postCustomerName: (NSString *)name {
-    
-    [self.httpClient postCustomerName: name callback: ^(NSDictionary * dict, NSError * error) {
-        if (error == nil) {
-            NSString * custName = dict[@"form"];
-            NSLog(@"%@", custName);
-            
-        } else {
-            NSLog(@"%@",error.localizedDescription);
-        }
-    }];
-}
-
-- (void)didFail: (HTTPBinManager *)httpManager {
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        self.processLabel.text = @"0";
-        self.statusWidthConstraint.constant = 0;
-        [self.view layoutIfNeeded];
+    double delayInSeconds = 0.3;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (ino64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^{
+        self.processLabel.text = errorInfo;
     });
 }
 
-- (void)didSucceed: (HTTPBinManager *)httpManager withStatus: (NSString *)percent {
+- (void)manager: (HTTPBinManager *)httpManager didSucceedWithStatus: (NSString *)percent {
+    
+    double delayInSeconds = 0.3;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (ino64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^{
+        self.processLabel.text = percent;
+    });
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        self.processLabel.text = percent;
+        
         int intPercent = [percent intValue];
         self.statusWidthConstraint.constant = intPercent * 150 / 100 ;
         [UIView animateWithDuration: 0.3 animations:^{
@@ -323,13 +294,17 @@
     });
 }
 
-- (void)didPassData: (HTTPBinManager *)httpManager
-      withFirstDict: (NSDictionary *)firstDict
-     withSecondDict: (NSDictionary *)secondDict
-          withImage: (UIImage *)image {
+- (void)manager: (HTTPBinManager *)httpManager didSucceedWithFirstDict: (NSDictionary *)firstDict withSecondDict: (NSDictionary *)secondDict withImage: (UIImage *)image {
     
-    NSLog(firstDict);
-    NSLog(secondDict);
+    NSLog(@"%@",firstDict);
+    NSLog(@"%@",secondDict);
+
+    double delayInSeconds = 0.3;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (ino64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^{
+        self.pigView.image = image;
+    });
 }
 
 @end
+
