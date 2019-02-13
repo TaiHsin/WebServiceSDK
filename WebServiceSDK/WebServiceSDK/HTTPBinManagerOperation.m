@@ -27,7 +27,7 @@
     __block NSDictionary * secondDict = [NSDictionary new];
     __block UIImage * pigImage = [UIImage new];
     
-    dispatch_semaphore_t mySemaphore = dispatch_semaphore_create(0);
+    self.semaphore = dispatch_semaphore_create(0);
     
     [self.httpClient fetchGetResponseWithCallback: ^(NSDictionary * dict, NSError * error) {
         
@@ -38,11 +38,11 @@
             
         } else {
             NSLog(@"%@",error.localizedDescription);
-            
+//            [self cancel];
             [self.delegate didRequestFail: self];
         }
         
-        dispatch_semaphore_signal(mySemaphore);
+        dispatch_semaphore_signal(self.semaphore);
     }];
     
     if (self.cancelled) {
@@ -52,7 +52,7 @@
         return;
     }
     
-    dispatch_semaphore_wait(mySemaphore, DISPATCH_TIME_FOREVER);
+    dispatch_semaphore_wait(self.semaphore, DISPATCH_TIME_FOREVER);
     [self.httpClient fetchImageWithCallback: ^(UIImage * image, NSError * error) {
         
         if (error == nil) {
@@ -61,11 +61,11 @@
             
         } else {
             NSLog(@"%@",error.localizedDescription);
-            
+//            [self cancel];
             [self.delegate didRequestFail: self];
         }
         
-        dispatch_semaphore_signal(mySemaphore);
+        dispatch_semaphore_signal(self.semaphore);
     }];
     
     if (self.cancelled) {
@@ -75,7 +75,7 @@
         return;
     }
     
-    dispatch_semaphore_wait(mySemaphore, DISPATCH_TIME_FOREVER);
+    dispatch_semaphore_wait(self.semaphore, DISPATCH_TIME_FOREVER);
     [self.httpClient postCustomerName: @"KKBOX" callback: ^(NSDictionary * dict, NSError * error) {
         
         if (error == nil) {
@@ -88,13 +88,15 @@
         } else {
             NSLog(@"%@",error.localizedDescription);
             
+//            [self cancel];
+            
             [self.delegate didRequestFail: self];
         }
         
-        dispatch_semaphore_signal(mySemaphore);
+        dispatch_semaphore_signal(self.semaphore);
     }];
     
-    dispatch_semaphore_wait(mySemaphore, DISPATCH_TIME_FOREVER);
+    dispatch_semaphore_wait(self.semaphore, DISPATCH_TIME_FOREVER);
     
     // Pass data after all request succeed.
     
@@ -102,6 +104,12 @@
 //                    withFirstDict: firstDict
 //                   withSecondDict: secondDict
 //                        withImage: pigImage];
+}
+
+- (void)cancel {
+    [super cancel];
+    
+    dispatch_semaphore_signal(self.semaphore);
 }
 
 @end

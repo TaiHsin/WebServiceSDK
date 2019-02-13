@@ -31,6 +31,8 @@
     
     [self addImageView];
     [self addExecuteButton];
+    [self addStatusView];
+    [self addStatusContentView];
     [self addProcessLabel];
 }
 
@@ -110,8 +112,8 @@
                                                            attribute: NSLayoutAttributeCenterY
                                                            relatedBy: NSLayoutRelationEqual
                                                               toItem: self.view
-                                                           attribute:NSLayoutAttributeCenterY
-                                                          multiplier: 1.75
+                                                           attribute: NSLayoutAttributeCenterY
+                                                          multiplier: 1.5
                                                             constant: 0]
      ];
     [self.view addConstraint: [NSLayoutConstraint constraintWithItem: self.executeButton
@@ -152,7 +154,7 @@
     [self.view addConstraint: [NSLayoutConstraint constraintWithItem: self.processLabel
                                                            attribute: NSLayoutAttributeBottom
                                                            relatedBy: NSLayoutRelationEqual
-                                                              toItem: self.executeButton
+                                                              toItem: self.statusView
                                                            attribute: NSLayoutAttributeTop
                                                           multiplier: 1
                                                             constant: 10]
@@ -161,10 +163,99 @@
     [self.view addConstraint: [NSLayoutConstraint constraintWithItem: self.processLabel
                                                            attribute: NSLayoutAttributeCenterX
                                                            relatedBy: NSLayoutRelationEqual
-                                                              toItem: self.executeButton
+                                                              toItem: self.statusView
                                                            attribute:NSLayoutAttributeCenterX
                                                           multiplier: 1
                                                             constant: 10]
+     ];
+}
+
+- (void)addStatusView {
+    
+    self.statusView = [UIView new];
+    [self.statusView setTranslatesAutoresizingMaskIntoConstraints: NO];
+    [self.statusView.layer setBorderWidth: 2];
+    [self.statusView.layer setBorderColor: [UIColor blueColor].CGColor];
+    [self.view addSubview: self.statusView];
+    
+    [self.statusView addConstraint: [NSLayoutConstraint constraintWithItem: self.statusView
+                                                                 attribute: NSLayoutAttributeHeight
+                                                                 relatedBy: NSLayoutRelationEqual
+                                                                    toItem: nil
+                                                                 attribute: 0
+                                                                multiplier: 1
+                                                                  constant: 20]
+     ];
+    
+    [self.statusView addConstraint: [NSLayoutConstraint constraintWithItem: self.statusView
+                                                                 attribute: NSLayoutAttributeWidth
+                                                                 relatedBy: NSLayoutRelationEqual
+                                                                    toItem: nil
+                                                                 attribute: 0
+                                                                multiplier: 1
+                                                                  constant: 150]
+     ];
+    
+    [self.view addConstraint: [NSLayoutConstraint constraintWithItem: self.statusView
+                                                           attribute: NSLayoutAttributeBottom
+                                                           relatedBy: NSLayoutRelationEqual
+                                                              toItem: self.executeButton
+                                                           attribute:NSLayoutAttributeTop
+                                                          multiplier: 1
+                                                            constant: -10]
+     ];
+    
+    [self.view addConstraint: [NSLayoutConstraint constraintWithItem: self.statusView
+                                                           attribute: NSLayoutAttributeCenterX
+                                                           relatedBy: NSLayoutRelationEqual
+                                                              toItem: self.view
+                                                           attribute:NSLayoutAttributeCenterX
+                                                          multiplier: 1
+                                                            constant: 0]
+     ];
+}
+
+- (void)addStatusContentView {
+    
+    self.statusContentView = [UIView new];
+    [self.statusContentView setTranslatesAutoresizingMaskIntoConstraints: NO];
+    [self.statusContentView setBackgroundColor: [UIColor blueColor]];
+    [self.view addSubview: self.statusContentView];
+    
+    [self.statusContentView addConstraint: [NSLayoutConstraint constraintWithItem: self.statusContentView
+                                                                 attribute: NSLayoutAttributeHeight
+                                                                 relatedBy: NSLayoutRelationEqual
+                                                                    toItem: nil
+                                                                 attribute: 0
+                                                                multiplier: 1
+                                                                  constant: 20]
+     ];
+    
+    self.statusWidthConstraint = [NSLayoutConstraint constraintWithItem: self.statusContentView
+                                                              attribute: NSLayoutAttributeWidth
+                                                              relatedBy: NSLayoutRelationEqual
+                                                                 toItem: nil
+                                                              attribute: 0
+                                                             multiplier: 1
+                                                               constant: 0];
+    [self.view addConstraint: self.statusWidthConstraint];
+    
+    [self.view addConstraint: [NSLayoutConstraint constraintWithItem: self.statusContentView
+                                                           attribute: NSLayoutAttributeCenterY
+                                                           relatedBy: NSLayoutRelationEqual
+                                                              toItem: self.statusView
+                                                           attribute: NSLayoutAttributeCenterY
+                                                          multiplier: 1
+                                                            constant: 0]
+     ];
+
+    [self.view addConstraint: [NSLayoutConstraint constraintWithItem: self.statusContentView
+                                                           attribute: NSLayoutAttributeLeft
+                                                           relatedBy: NSLayoutRelationEqual
+                                                              toItem: self.statusView
+                                                           attribute:NSLayoutAttributeLeft
+                                                          multiplier: 1
+                                                            constant: 0]
      ];
 }
 
@@ -175,15 +266,14 @@
 
 - (void)fetchData {
     
-    [self.httpClient fetchGetResponseWithCallback: ^(NSDictionary * dict, NSError * error)
-     {
-         if (error == nil) {
-             NSLog(@"%@", dict);
-             
-         } else {
-             NSLog(@"%@",error.localizedDescription);
-         }
-     }];
+    [self.httpClient fetchGetResponseWithCallback: ^(NSDictionary * dict, NSError * error) {
+        if (error == nil) {
+            NSLog(@"%@", dict);
+            
+        } else {
+            NSLog(@"%@",error.localizedDescription);
+        }
+    }];
 }
 
 - (void)fetchImage {
@@ -216,6 +306,8 @@
     
     dispatch_async(dispatch_get_main_queue(), ^{
         self.processLabel.text = @"0";
+        self.statusWidthConstraint.constant = 0;
+        [self.view layoutIfNeeded];
     });
 }
 
@@ -223,7 +315,11 @@
     
     dispatch_async(dispatch_get_main_queue(), ^{
         self.processLabel.text = percent;
-        [self.view layoutIfNeeded];
+        int intPercent = [percent intValue];
+        self.statusWidthConstraint.constant = intPercent * 150 / 100 ;
+        [UIView animateWithDuration: 0.3 animations:^{
+            [self.view layoutIfNeeded];
+        }];
     });
 }
 

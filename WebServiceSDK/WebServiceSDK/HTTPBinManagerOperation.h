@@ -22,7 +22,9 @@
 
 @interface HTTPBinManagerOperation: NSOperation
 
-@property HTTPClient * httpClient;
+@property (nonatomic, strong) HTTPClient * httpClient;
+
+@property (nonatomic, strong) dispatch_semaphore_t semaphore;
 
 @property (weak, nonatomic) id <HTTPOperationProcessDelegate> delegate;
 

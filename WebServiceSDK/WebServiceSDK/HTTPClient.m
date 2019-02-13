@@ -54,7 +54,6 @@
     NSString * dataUrl = @"https://httpbin.org/get";
     [self getData: dataUrl
          callback:^(NSData * data, NSError * error) {
-//             dispatch_async(dispatch_get_main_queue(), ^{
              
                  if (data != nil) {
                      NSError * parseError;
@@ -66,7 +65,6 @@
                  } else {
                      callback(nil, error);
                  }
-//             });
          }
      ];
 }
@@ -77,7 +75,6 @@
     NSString * dataUrl = @"https://httpbin.org/image/png";
     [self getData: dataUrl
          callback: ^(NSData * data, NSError * error) {
-//             dispatch_async(dispatch_get_main_queue(), ^{
              
                  if (data != nil) {
                      UIImage * image = [UIImage imageWithData: data];
@@ -86,7 +83,6 @@
                  } else {
                      callback(nil, error);
                  }
-//             });
          }
      ];
 }
@@ -108,13 +104,12 @@
                                     NSURLResponse * _Nullable response,
                                     NSError * _Nullable error) {
                    
-//                   dispatch_async(dispatch_get_main_queue(), ^{
-                   
                        if (error != nil) {
                            NSLog(@"dataTaskWithRequest error: %@", error);
                            callback(nil, error);
                        }
-                       
+                   
+
                        if ([response isKindOfClass: [NSHTTPURLResponse class]]) {
                            NSInteger statusCode = [(NSHTTPURLResponse *) response statusCode];
                            
@@ -135,7 +130,6 @@
                                                                                    error: &parseError];
                            callback(dict, parseError);
                        }
-//                   });
                }
      ];
     [dataTask resume];

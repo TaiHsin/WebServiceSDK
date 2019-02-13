@@ -22,7 +22,7 @@
 
 @interface HTTPBinManager: NSObject <HTTPOperationProcessDelegate>
 
-@property NSOperationQueue * queue;
+@property (nonatomic, strong) NSOperationQueue * queue;
 
 @property (weak, nonatomic) id <HTTPProcessDelegate> delegate;
 

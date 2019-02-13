@@ -35,10 +35,8 @@
 
 - (void)executeOperation {
     
-//    [self.httpOperation cancel];
-    [self.delegate didFail: self];
-    
     [self.queue cancelAllOperations];
+    [self.delegate didFail: self];
     
     HTTPBinManagerOperation * httpOperation = [HTTPBinManagerOperation new];
     httpOperation.delegate = self;
@@ -49,6 +47,7 @@
 
 - (void)didRequestFail: (HTTPBinManagerOperation *)httpOperation {
     
+//    [self.queue cancelAllOperations];
     [self.delegate didFail: self];
 }
 
@@ -69,6 +68,4 @@
                         withImage: image];
 }
 
-
 @end
-
