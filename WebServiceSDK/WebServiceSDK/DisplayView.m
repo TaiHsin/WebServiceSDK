@@ -107,7 +107,7 @@
                                                            relatedBy: NSLayoutRelationEqual
                                                               toItem: self
                                                            attribute: NSLayoutAttributeCenterY
-                                                          multiplier: 1.5
+                                                          multiplier: 1.2
                                                             constant: 0]
      ];
     [self addConstraint: [NSLayoutConstraint constraintWithItem: self.executeButton
@@ -123,7 +123,7 @@
 - (void)addProcessLabel {
     self.processLabel = [UILabel new];
     [self.processLabel setTranslatesAutoresizingMaskIntoConstraints: NO];
-    [self.processLabel setTintColor: [UIColor grayColor]];
+    [self.processLabel setTextColor: [UIColor blueColor]];
     [self.processLabel setTextAlignment: NSTextAlignmentCenter];
     [self.processLabel setText: @"0"];
     [self addSubview: self.processLabel];
@@ -134,7 +134,7 @@
                                                                       toItem: nil
                                                                    attribute: 0
                                                                   multiplier: 1
-                                                                    constant: 30]
+                                                                    constant: 50]
      ];
     
     [self.processLabel addConstraint: [NSLayoutConstraint constraintWithItem: self.processLabel
@@ -143,7 +143,7 @@
                                                                       toItem: nil
                                                                    attribute: 0
                                                                   multiplier: 1
-                                                                    constant: 150]
+                                                                    constant: 200]
      ];
     
     [self addConstraint: [NSLayoutConstraint constraintWithItem: self.processLabel
@@ -171,6 +171,7 @@
     [self.statusView setTranslatesAutoresizingMaskIntoConstraints: NO];
     [self.statusView.layer setBorderWidth: 2];
     [self.statusView.layer setBorderColor: [UIColor blueColor].CGColor];
+    [[self.statusView layer] setCornerRadius: 5];
     [self addSubview: self.statusView];
     
     [self.statusView addConstraint: [NSLayoutConstraint constraintWithItem: self.statusView
@@ -188,7 +189,7 @@
                                                                     toItem: nil
                                                                  attribute: 0
                                                                 multiplier: 1
-                                                                  constant: 150]
+                                                                  constant: 200]
      ];
     
     [self addConstraint: [NSLayoutConstraint constraintWithItem: self.statusView
@@ -197,7 +198,7 @@
                                                               toItem: self.executeButton
                                                            attribute:NSLayoutAttributeTop
                                                           multiplier: 1
-                                                            constant: -10]
+                                                            constant: -15]
      ];
     
     [self addConstraint: [NSLayoutConstraint constraintWithItem: self.statusView
@@ -215,6 +216,7 @@
     self.statusContentView = [UIView new];
     [self.statusContentView setTranslatesAutoresizingMaskIntoConstraints: NO];
     [self.statusContentView setBackgroundColor: [UIColor blueColor]];
+    [[self.statusContentView layer] setCornerRadius: 5];
     [self addSubview: self.statusContentView];
     
     [self.statusContentView addConstraint: [NSLayoutConstraint constraintWithItem: self.statusContentView

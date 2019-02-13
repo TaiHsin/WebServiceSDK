@@ -62,7 +62,7 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         
         int intPercent = [percent intValue];
-        self.displayView.statusWidthConstraint.constant = intPercent * 150 / 100 ;
+        self.displayView.statusWidthConstraint.constant = intPercent * 200 / 100 ;
         [UIView animateWithDuration: 0.3 animations:^{
             [self.view layoutIfNeeded];
         }];
