@@ -65,11 +65,7 @@
                      NSDictionary * dict = [NSJSONSerialization JSONObjectWithData: data
                                                                            options: 0
                                                                              error: &parseError];
-                     
-                     if (parseError) {
-                         return callback(nil, parseError);
-                     }
-                     return callback(dict, nil);
+                     return callback(dict, parseError);
                      
                  } else {
                      return callback(nil, error);
@@ -133,7 +129,6 @@
                                                                                                 @"ResponseError"
                                                                                             }];
                                return callback(nil, responseError);
-
                            }
                        }
                        
@@ -142,11 +137,7 @@
                            NSDictionary * dict = [NSJSONSerialization JSONObjectWithData: data
                                                                                  options: 0
                                                                                    error: &parseError];
-                           
-                           if (parseError) {
-                               return callback(nil, parseError);
-                           }
-                           return callback(dict, nil);
+                           return callback(dict, parseError);
                        }
                }
      ];
