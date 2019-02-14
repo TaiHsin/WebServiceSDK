@@ -29,8 +29,7 @@
                    
                    if (error != nil) {
                        NSLog(@"dataTaskWithRequest error: %@", error);
-                       callback(nil, error);
-                       return;
+                       return callback(nil, error);
                    }
                    
                    if ([response isKindOfClass: [NSHTTPURLResponse class]]) {
@@ -45,12 +44,11 @@
                                                                                             @"ResponseError"
                                                                                         }];
                            
-                           callback(nil, responseError);
-                           return;
+                           return callback(nil, responseError);
                        }
                    }
                    
-                   callback(data, nil);
+                   return callback(data, nil);
                }
      ];
     [dataTask resume];
@@ -67,11 +65,14 @@
                      NSDictionary * dict = [NSJSONSerialization JSONObjectWithData: data
                                                                            options: 0
                                                                              error: &parseError];
-                     callback(dict, parseError);
+                     
+                     if (parseError) {
+                         return callback(nil, parseError);
+                     }
+                     return callback(dict, nil);
                      
                  } else {
-                     callback(nil, error);
-                     return;
+                     return callback(nil, error);
                  }
          }
      ];
@@ -86,11 +87,10 @@
              
                  if (data != nil) {
                      UIImage * image = [UIImage imageWithData: data];
-                     callback(image, nil);
+                     return callback(image, nil);
                      
                  } else {
-                     callback(nil, error);
-                     return;
+                     return callback(nil, error);
                  }
          }
      ];
@@ -99,7 +99,7 @@
 - (void)postCustomerName: (NSString *)name
                  callback: (void(^)(NSDictionary *, NSError *))callback {
     
-    NSString * dataUrl = @"https://httpbin.org/posts";
+    NSString * dataUrl = @"https://httpbin.org/post";
     NSURL * url = [NSURL URLWithString: dataUrl];
     NSMutableURLRequest * request = [NSMutableURLRequest requestWithURL: url];
     request.HTTPMethod = @"POST";
@@ -117,8 +117,7 @@
                    
                        if (error != nil) {
                            NSLog(@"dataTaskWithRequest error: %@", error);
-                           callback(nil, error);
-                           return;
+                           return callback(nil, error);
                        }
                    
 
@@ -133,8 +132,8 @@
                                                                                 userInfo: @{NSLocalizedDescriptionKey:
                                                                                                 @"ResponseError"
                                                                                             }];
-                               callback(nil, responseError);
-                               return;
+                               return callback(nil, responseError);
+
                            }
                        }
                        
@@ -143,7 +142,11 @@
                            NSDictionary * dict = [NSJSONSerialization JSONObjectWithData: data
                                                                                  options: 0
                                                                                    error: &parseError];
-                           callback(dict, parseError);
+                           
+                           if (parseError) {
+                               return callback(nil, parseError);
+                           }
+                           return callback(dict, nil);
                        }
                }
      ];
