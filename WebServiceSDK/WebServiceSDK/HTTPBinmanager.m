@@ -44,10 +44,10 @@
 
 #pragma HTTPOperationDelegate
 
-- (void)operation:(HTTPBinManagerOperation *)httpOperation willFailWithError:(NSString *)errorInfo {
+- (void)operation:(HTTPBinManagerOperation *)httpOperation willFailWithError:(NSError *)error {
     
     [self.queue cancelAllOperations];
-    [self.delegate manager: self didFailWithError: errorInfo];
+    [self.delegate manager: self didFailWithError: error];
 }
 
 - (void)operation: (HTTPBinManagerOperation *)httpOperation willSuccessWithStatus: (NSString *)percent {

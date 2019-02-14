@@ -16,7 +16,10 @@
     
     NSURL * url = [NSURL URLWithString: dataUrl];
     NSURLRequest * request = [NSURLRequest requestWithURL: url];
-    NSURLSession * session = [NSURLSession sharedSession];
+    
+    // The task after network responsed will send to main thread.
+    NSURLSessionConfiguration * config = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession * session = [NSURLSession sessionWithConfiguration: config delegate: nil delegateQueue: [NSOperationQueue mainQueue]];
     
     NSURLSessionDataTask * dataTask =
     [session dataTaskWithRequest: request
@@ -36,9 +39,11 @@
                        if (statusCode != 200) {
                            NSLog(@"dataTaskWithRequest HTTP status code: %ld", (long)statusCode);
                            
-                           NSError * responseError = [[NSError alloc] initWithDomain: @"ResponseError"
-                                                                                code: 1
-                                                                            userInfo: nil];
+                           NSError * responseError = [[NSError alloc] initWithDomain: @"responseError.domain"
+                                                                                code: 4444
+                                                                            userInfo: @{NSLocalizedDescriptionKey:
+                                                                                            @"ResponseError"
+                                                                                        }];
                            
                            callback(nil, responseError);
                            return;
@@ -94,14 +99,16 @@
 - (void)postCustomerName: (NSString *)name
                  callback: (void(^)(NSDictionary *, NSError *))callback {
     
-    NSString * dataUrl = @"https://httpbin.org/post";
+    NSString * dataUrl = @"https://httpbin.org/posts";
     NSURL * url = [NSURL URLWithString: dataUrl];
     NSMutableURLRequest * request = [NSMutableURLRequest requestWithURL: url];
     request.HTTPMethod = @"POST";
     NSString * args = [NSString stringWithFormat: @"custname=%@", name];
     request.HTTPBody = [args dataUsingEncoding: NSUTF8StringEncoding];
     
-    NSURLSession * session = [NSURLSession sharedSession];
+    NSURLSessionConfiguration * config = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession * session = [NSURLSession sessionWithConfiguration: config delegate: nil delegateQueue: [NSOperationQueue mainQueue]];
+    
     NSURLSessionDataTask * dataTask =
     [session dataTaskWithRequest: request
                completionHandler: ^(NSData * _Nullable data,
@@ -121,9 +128,11 @@
                            if (statusCode != 200) {
                                NSLog(@"dataTaskWithRequest HTTP status code: %ld", (long)statusCode);
                                
-                               NSError * responseError = [[NSError alloc] initWithDomain: @"ResponseError"
-                                                                                    code: 1
-                                                                                userInfo: nil];
+                               NSError * responseError = [[NSError alloc] initWithDomain: @"responseError.domain"
+                                                                                    code: 4444
+                                                                                userInfo: @{NSLocalizedDescriptionKey:
+                                                                                                @"ResponseError"
+                                                                                            }];
                                callback(nil, responseError);
                                return;
                            }

@@ -38,7 +38,7 @@
         } else {
             NSLog(@"%@",error.localizedDescription);
 
-            [self.delegate operation: self willFailWithError: error.domain];
+            [self.delegate operation: self willFailWithError: error];
         }
         
         dispatch_semaphore_signal(self.semaphore);
@@ -60,7 +60,7 @@
         } else {
             NSLog(@"%@",error.localizedDescription);
            
-            [self.delegate operation: self willFailWithError: error.domain];
+            [self.delegate operation: self willFailWithError: error];
         }
         
         dispatch_semaphore_signal(self.semaphore);
@@ -82,7 +82,7 @@
         } else {
             NSLog(@"%@",error.localizedDescription);
             
-            [self.delegate operation: self willFailWithError: error.domain];
+            [self.delegate operation: self willFailWithError: error];
         }
         
         dispatch_semaphore_signal(self.semaphore);

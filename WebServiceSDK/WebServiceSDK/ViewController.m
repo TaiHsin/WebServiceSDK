@@ -42,12 +42,14 @@
 
 #pragma HTTPProcessDelegate
 
-- (void)manager:(HTTPBinManager *)httpManager didFailWithError:(NSString *)errorInfo {
+- (void)manager:(HTTPBinManager *)httpManager didFailWithError:(NSError *)error {
 
     double delayInSeconds = 0.3;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (ino64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_main_queue(), ^{
-        self.displayView.processLabel.text = errorInfo;
+        
+        // Pass whole NSError object instead of description in error.userInfo
+        self.displayView.processLabel.text = error.userInfo[NSLocalizedDescriptionKey];
     });
 }
 
@@ -59,14 +61,11 @@
         self.displayView.processLabel.text = percent;
     });
     
-    dispatch_async(dispatch_get_main_queue(), ^{
-        
-        int intPercent = [percent intValue];
-        self.displayView.statusWidthConstraint.constant = intPercent * 200 / 100 ;
-        [UIView animateWithDuration: 0.3 animations:^{
-            [self.view layoutIfNeeded];
-        }];
-    });
+    int intPercent = [percent intValue];
+    self.displayView.statusWidthConstraint.constant = intPercent * 200 / 100 ;
+    [UIView animateWithDuration: 0.3 animations:^{
+        [self.view layoutIfNeeded];
+    }];
 }
 
 - (void)manager: (HTTPBinManager *)httpManager didSucceedWithFirstDict: (NSDictionary *)firstDict withSecondDict: (NSDictionary *)secondDict withImage: (UIImage *)image {

@@ -13,7 +13,7 @@
 @protocol ManagerDelegate <NSObject>
 
 - (void)manager: (HTTPBinManager *)httpManager didSucceedWithStatus: (NSString *)percent;
-- (void)manager: (HTTPBinManager *)httpManager didFailWithError: (NSString *)errorInfo;
+- (void)manager: (HTTPBinManager *)httpManager didFailWithError: (NSError *)error;
 - (void)manager: (HTTPBinManager *)httpManager didSucceedWithFirstDict: (NSDictionary *)firstDict withSecondDict: (NSDictionary *)secondDict withImage: (UIImage *)image;
 
 @end

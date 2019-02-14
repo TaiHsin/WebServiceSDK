@@ -13,7 +13,7 @@
 @protocol OperationDelegate <NSObject>
 
 - (void)operation: (HTTPBinManagerOperation *)httpOperation willSuccessWithStatus: (NSString *)percent;
-- (void)operation: (HTTPBinManagerOperation *)httpOperation willFailWithError: (NSString *)errorInfo;
+- (void)operation: (HTTPBinManagerOperation *)httpOperation willFailWithError: (NSError *)error;
 - (void)operation: (HTTPBinManagerOperation *)httpOperation willSucceedWithFirstDict: (NSDictionary *)firstDict withSecondDict: (NSDictionary *)secondDict withImage: (UIImage *)image;
 
 @end
